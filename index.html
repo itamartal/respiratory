@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html dir="rtl">
   <head>
-    <title>Respiratory System VR</title>
+    <title>מערכת הנשימה</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js"></script>
     <style>
       .info-text {
@@ -13,11 +13,68 @@
         background: rgba(0,0,0,0.7);
         padding: 10px;
         border-radius: 5px;
+        font-family: Arial, sans-serif;
+      }
+      
+      .tooltip {
+        display: none;
+        position: fixed;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: Arial, sans-serif;
+        direction: rtl;
+        z-index: 1000;
       }
     </style>
   </head>
   <body>
-    <div class="info-text">Use WASD to move, mouse/touch to look around</div>
+    <div class="info-text">השתמש במקשי WASD לתנועה, בעכבר להסתכלות, ובגלגלת העכבר להתקרבות והתרחקות</div>
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+      AFRAME.registerComponent('zoom-controls', {
+        init: function () {
+          this.camera = this.el;
+          window.addEventListener('wheel', (e) => {
+            const position = this.camera.getAttribute('position');
+            if (e.deltaY < 0) {
+              position.z -= 0.5;
+            } else {
+              position.z += 0.5;
+            }
+            position.z = Math.min(Math.max(position.z, 2), 10);
+            this.camera.setAttribute('position', position);
+          });
+        }
+      });
+
+      AFRAME.registerComponent('hoverable', {
+        schema: {
+          tooltip: {type: 'string'}
+        },
+        init: function () {
+          this.el.addEventListener('mouseenter', () => {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.textContent = this.data.tooltip;
+            tooltip.style.display = 'block';
+          });
+          
+          this.el.addEventListener('mouseleave', () => {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'none';
+          });
+          
+          this.el.addEventListener('mousemove', (e) => {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.left = e.clientX + 10 + 'px';
+            tooltip.style.top = e.clientY + 10 + 'px';
+          });
+        }
+      });
+    </script>
+
     <a-scene>
       <!-- Background Image -->
       <a-entity position="0 1.6 -2">
@@ -29,11 +86,6 @@
       <!-- Environment -->
       <a-sky color="#000033"></a-sky>
       <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#112233"></a-plane>
-
-      <!-- Camera -->
-      <a-entity position="0 1.6 5">
-        <a-camera look-controls wasd-controls></a-camera>
-      </a-entity>
 
       <!-- Lighting -->
       <a-light type="ambient" color="#fff" intensity="0.5"></a-light>
@@ -125,7 +177,9 @@
           <a-box position="0 0.8 0" 
                  width="0.2" height="0.15" depth="0.2" 
                  color="#ff9999"
-                 material="opacity: 0.8">
+                 material="opacity: 0.8"
+                 hoverable="tooltip: חלל האף - מסנן, מחמם ומלחלח את האוויר הנכנס"
+                 class="interactive">
           </a-box>
           
           <!-- Trachea -->
@@ -133,7 +187,9 @@
                      height="0.5" 
                      radius="0.05" 
                      color="#ff7777"
-                     material="opacity: 0.9">
+                     material="opacity: 0.9"
+                     hoverable="tooltip: קנה הנשימה - צינור המוביל אוויר אל הריאות"
+                     class="interactive">
           </a-cylinder>
 
           <!-- Lungs -->
@@ -143,10 +199,13 @@
               <a-sphere position="0 0 0" 
                         radius="0.25" 
                         color="#ff6666"
-                        material="opacity: 0.7">
+                        material="opacity: 0.7"
+                        hoverable="tooltip: ריאה שמאלית - איבר חיוני לחילוף הגזים בגוף"
+                        class="interactive">
               </a-sphere>
               <!-- Bronchioles (Left) -->
-              <a-entity position="0.1 0 0">
+              <a-entity position="0.1 0 0"
+                        hoverable="tooltip: סימפונות - צינורות קטנים המובילים אוויר בתוך הריאות">
                 <a-cylinder position="0 0 0" 
                            height="0.2" 
                            radius="0.02" 
@@ -154,7 +213,8 @@
                            color="#ff5555">
                 </a-cylinder>
                 <!-- Alveoli clusters (Left) -->
-                <a-entity position="0.1 -0.1 0">
+                <a-entity position="0.1 -0.1 0"
+                          hoverable="tooltip: נאדיות - שקיקי אוויר זעירים בהם מתבצע חילוף הגזים">
                   <a-sphere position="0 0 0" radius="0.03" color="#ff4444"></a-sphere>
                   <a-sphere position="0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
                   <a-sphere position="-0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
@@ -167,10 +227,13 @@
               <a-sphere position="0 0 0" 
                         radius="0.25" 
                         color="#ff6666"
-                        material="opacity: 0.7">
+                        material="opacity: 0.7"
+                        hoverable="tooltip: ריאה ימנית - איבר חיוני לחילוף הגזים בגוף"
+                        class="interactive">
               </a-sphere>
               <!-- Bronchioles (Right) -->
-              <a-entity position="-0.1 0 0">
+              <a-entity position="-0.1 0 0"
+                        hoverable="tooltip: סימפונות - צינורות קטנים המובילים אוויר בתוך הריאות">
                 <a-cylinder position="0 0 0" 
                            height="0.2" 
                            radius="0.02" 
@@ -178,7 +241,8 @@
                            color="#ff5555">
                 </a-cylinder>
                 <!-- Alveoli clusters (Right) -->
-                <a-entity position="-0.1 -0.1 0">
+                <a-entity position="-0.1 -0.1 0"
+                          hoverable="tooltip: נאדיות - שקיקי אוויר זעירים בהם מתבצע חילוף הגזים">
                   <a-sphere position="0 0 0" radius="0.03" color="#ff4444"></a-sphere>
                   <a-sphere position="0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
                   <a-sphere position="-0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
@@ -192,20 +256,27 @@
             <a-sphere position="0 0 0" 
                       radius="0.15" 
                       color="#cc0000"
-                      material="opacity: 0.8">
+                      material="opacity: 0.8"
+                      hoverable="tooltip: לב - משאבת הדם של הגוף"
+                      class="interactive">
             </a-sphere>
           </a-entity>
         </a-entity>
       </a-entity>
 
-      <!-- Labels -->
+      <!-- Hebrew Labels -->
       <a-entity position="0.8 0 0">
-        <a-text value="Nasal Cavity" position="0 3.3 0" color="white" scale="0.5 0.5 0.5"></a-text>
-        <a-text value="Trachea" position="0 3.0 0" color="white" scale="0.5 0.5 0.5"></a-text>
-        <a-text value="Lungs" position="0 2.7 0" color="white" scale="0.5 0.5 0.5"></a-text>
-        <a-text value="Bronchioles" position="0 2.4 0" color="white" scale="0.5 0.5 0.5"></a-text>
-        <a-text value="Alveoli" position="0 2.1 0" color="white" scale="0.5 0.5 0.5"></a-text>
-        <a-text value="Heart" position="0 1.8 0" color="white" scale="0.5 0.5 0.5"></a-text>
+        <a-text value="חלל האף" position="0 3.3 0" color="white" scale="0.5 0.5 0.5"></a-text>
+        <a-text value="קנה הנשימה" position="0 3.0 0" color="white" scale="0.5 0.5 0.5"></a-text>
+        <a-text value="ריאות" position="0 2.7 0" color="white" scale="0.5 0.5 0.5"></a-text>
+        <a-text value="סימפונות" position="0 2.4 0" color="white" scale="0.5 0.5 0.5"></a-text>
+        <a-text value="נאדיות" position="0 2.1 0" color="white" scale="0.5 0.5 0.5"></a-text>
+        <a-text value="לב" position="0 1.8 0" color="white" scale="0.5 0.5 0.5"></a-text>
+      </a-entity>
+
+      <!-- Camera -->
+      <a-entity position="0 1.6 5">
+        <a-camera look-controls wasd-controls zoom-controls></a-camera>
       </a-entity>
 
     </a-scene>
