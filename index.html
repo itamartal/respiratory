@@ -5,39 +5,50 @@
   </head>
   <body>
     <a-scene>
-      <!-- Camera -->
-      <a-entity position="0 1.6 3">
-        <a-camera></a-camera>
+      <!-- Background Image -->
+      <a-sky src="/background.jpg"></a-sky>
+      
+      <!-- Camera with Rotation and Zoom Controls -->
+      <a-entity id="cameraRig" position="0 1.6 3">
+        <a-camera id="camera" wasd-controls look-controls></a-camera>
       </a-entity>
-
+      <script>
+        document.addEventListener("wheel", (event) => {
+          let cameraRig = document.getElementById("cameraRig");
+          let position = cameraRig.getAttribute("position");
+          position.z += event.deltaY * 0.01;
+          cameraRig.setAttribute("position", position);
+        });
+      </script>
+      
       <!-- Lighting -->
       <a-light type="directional" position="1 1 1" intensity="0.8"></a-light>
       <a-light type="ambient" intensity="0.5"></a-light>
 
       <!-- Nose -->
-      <a-sphere position="-0.5 1.8 0" radius="0.2" color="pink"></a-sphere>
-      <a-text value="Nose" position="-0.5 2.1 0" align="center"></a-text>
+      <a-sphere position="-0.5 2 0" radius="0.2" color="pink"></a-sphere>
+      <a-text value="אף" position="-0.5 2.3 0" align="center"></a-text>
       
       <!-- Trachea -->
-      <a-cylinder position="0 1.4 0" radius="0.1" height="0.6" color="lightgray"></a-cylinder>
-      <a-text value="Trachea" position="0 1.8 0.2" align="center"></a-text>
+      <a-cylinder position="0 1.5 0" radius="0.1" height="0.7" color="lightgray"></a-cylinder>
+      <a-text value="קנה נשימה" position="0 1.9 0.2" align="center"></a-text>
 
       <!-- Lungs -->
-      <a-sphere position="-0.4 1.0 0" radius="0.4" color="red"></a-sphere>
-      <a-sphere position="0.4 1.0 0" radius="0.4" color="red"></a-sphere>
-      <a-text value="Lungs" position="0 1.5 0" align="center"></a-text>
+      <a-sphere position="-0.5 1.0 0" radius="0.5" color="red"></a-sphere>
+      <a-sphere position="0.5 1.0 0" radius="0.5" color="red"></a-sphere>
+      <a-text value="ריאות" position="0 1.5 0" align="center"></a-text>
 
       <!-- Bronchiole -->
-      <a-cylinder position="0 0.8 0" radius="0.05" height="0.5" color="brown"></a-cylinder>
-      <a-text value="Bronchiole" position="0 1.2 0.2" align="center"></a-text>
+      <a-cylinder position="0 0.8 0" radius="0.07" height="0.5" color="brown"></a-cylinder>
+      <a-text value="סימפונות" position="0 1.2 0.2" align="center"></a-text>
 
       <!-- Alveoli -->
-      <a-sphere position="0 0.4 0" radius="0.1" color="lightpink"></a-sphere>
-      <a-text value="Alveoli" position="0 0.6 0.2" align="center"></a-text>
+      <a-sphere position="0 0.3 0" radius="0.15" color="lightpink"></a-sphere>
+      <a-text value="נאדיות ריאה" position="0 0.6 0.2" align="center"></a-text>
 
       <!-- Diaphragm -->
-      <a-plane position="0 -0.1 0" rotation="90 0 0" width="1" height="0.2" color="lightblue"></a-plane>
-      <a-text value="Diaphragm" position="0 0.1 0.2" align="center"></a-text>
+      <a-plane position="0 -0.2 0" rotation="90 0 0" width="1.2" height="0.2" color="lightblue"></a-plane>
+      <a-text value="סרעפת" position="0 0 0.2" align="center"></a-text>
     </a-scene>
   </body>
 </html>
