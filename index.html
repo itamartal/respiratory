@@ -4,150 +4,26 @@
 <head>
     <title>מערכת הנשימה - יובל טל ועמית אופק</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js"></script>
-    
-    <style>
-        .info-text {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: white;
-            z-index: 999;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
-            font-family: Arial, sans-serif;
-        }
-
-        .tooltip {
-            display: none;
-            position: fixed;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: Arial, sans-serif;
-            direction: rtl;
-            z-index: 1000;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="info-text">השתמש במקשי החיצים לתנועה, בעכבר להסתכלות, ובגלגלת העכבר להתקרבות והתרחקות</div>
-    <div id="tooltip" class="tooltip"></div>
+    <div class="info-text">השתמש במקשי החיצים לתנועה, בעכבר להסתכלות</div>
 
-    <script>
-        AFRAME.registerComponent('zoom-controls', {
-            init: function () {
-                this.camera = this.el;
-                window.addEventListener('wheel', (e) => {
-                    const position = this.camera.getAttribute('position');
-                    if (e.deltaY < 0) {
-                        position.z -= 0.5;
-                    } else {
-                        position.z += 0.5;
-                    }
-                    position.z = Math.min(Math.max(position.z, 2), 10);
-                    this.camera.setAttribute('position', position);
-                });
-            }
-        });
-
-        AFRAME.registerComponent('hoverable', {
-            schema: {
-                tooltip: { type: 'string' }
-            },
-            init: function () {
-                this.el.addEventListener('mouseenter', () => {
-                    const tooltip = document.getElementById('tooltip');
-                    tooltip.textContent = this.data.tooltip;
-                    tooltip.style.display = 'block';
-                });
-
-                this.el.addEventListener('mouseleave', () => {
-                    const tooltip = document.getElementById('tooltip');
-                    tooltip.style.display = 'none';
-                });
-
-                this.el.addEventListener('mousemove', (e) => {
-                    const tooltip = document.getElementById('tooltip');
-                    tooltip.style.left = e.clientX + 10 + 'px';
-                    tooltip.style.top = e.clientY + 10 + 'px';
-                });
-            }
-        });
-
-        AFRAME.registerComponent('floating-panel', {
-            schema: {
-                title: { type: 'string', default: '' },
-                description: { type: 'string', default: '' },
-                image: { type: 'string', default: '' }
-            },
-            init: function () {
-                const el = this.el;
-
-                // Create panel background
-                const panel = document.createElement('a-plane');
-                panel.setAttribute('width', '1.5');
-                panel.setAttribute('height', '1.2');
-                panel.setAttribute('color', '#334455');
-                panel.setAttribute('material', 'opacity', '0.9');
-
-                // Create title text
-                const title = document.createElement('a-text');
-                title.setAttribute('value', this.data.title);
-                title.setAttribute('position', '0 0.4 0.01');
-                title.setAttribute('align', 'center');
-                title.setAttribute('width', '1.4');
-                title.setAttribute('color', 'white');
-                el.appendChild(title);
-
-                // Create description text
-                const desc = document.createElement('a-text');
-                desc.setAttribute('value', this.data.description);
-                desc.setAttribute('position', '0 0 0.01');
-                desc.setAttribute('align', 'center');
-                desc.setAttribute('width', '1.4');
-                desc.setAttribute('color', 'white');
-                desc.setAttribute('baseline', 'top');
-                el.appendChild(desc);
-
-                // Create image if provided
-                if (this.data.image) {
-                    const img = document.createElement('a-image');
-                    img.setAttribute('src', this.data.image);
-                    img.setAttribute('position', '0 -0.3 0.01');
-                    img.setAttribute('width', '0.8');
-                    img.setAttribute('height', '0.4');
-                    el.appendChild(img);
-                }
-
-                el.appendChild(panel);                
-
-                // Add floating animation
-                el.setAttribute('animation', {
-                    property: 'position',
-                    dir: 'alternate',
-                    dur: 2000,
-                    easing: 'easeInOutSine',
-                    loop: true,
-                    from: el.getAttribute('position').y + ' ' + el.getAttribute('position').x + ' ' + el.getAttribute('position').z,
-                    to: el.getAttribute('position').y + 0.1 + ' ' + el.getAttribute('position').x + ' ' + el.getAttribute('position').z
-                });
-            }
-        });
-    </script>
+    <script type="text/javascript" src="script.js"></script>
 
     <a-scene>
         <!-- Background Image -->
-        <a-entity position="0 1.6 -2">
-            <a-plane width="4" height="3" material="src: images/background.jpg; transparent: true; opacity: 0.3">
+        <a-entity position="0 6.6 -2">
+            <a-plane width="6" height="6" material="src: images/background.jpg; transparent: true; opacity: 0.5">
             </a-plane>
         </a-entity>
 
-        <!-- Environment -->
-        <a-sky color="#000033"></a-sky>
-        <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#112233"></a-plane>
+        <!-- סביבה Environment -->
+        <!-- שמים -->
+        <a-sky color="#afccfa"></a-sky>
+        <!-- רצפה -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#361607"></a-plane>
 
         <!-- Lighting -->
         <a-light type="ambient" color="#fff" intensity="0.5"></a-light>
@@ -157,19 +33,19 @@
         <a-entity position="0 1.6 0">
             <!-- Transparent Body Shape -->
             <a-entity>
-                <!-- Torso -->
+                <!-- גוף Torso -->
                 <a-box position="0 0 0" width="0.8" height="1.2" depth="0.4" color="#ffffff" material="opacity: 0.15">
                 </a-box>
 
-                <!-- Shoulders -->
+                <!-- כתפיים Shoulders -->
                 <a-box position="0 0.5 0" width="1.2" height="0.2" depth="0.4" color="#ffffff" material="opacity: 0.15">
                 </a-box>
 
-                <!-- Neck -->
+                <!-- צוואר Neck -->
                 <a-cylinder position="0 0.7 0" radius="0.1" height="0.3" color="#ffffff" material="opacity: 0.15">
                 </a-cylinder>
 
-                <!-- Arms -->
+                <!-- זרועות Arms -->
                 <a-box position="-0.5 0.3 0" width="0.2" height="0.8" depth="0.2" color="#ffffff"
                     material="opacity: 0.15">
                 </a-box>
@@ -177,67 +53,65 @@
                     material="opacity: 0.15">
                 </a-box>
 
-                <!-- Abdomen -->
+                <!-- בטן Abdomen -->
                 <a-box position="0 -0.5 0" width="0.7" height="0.4" depth="0.4" color="#ffffff"
                     material="opacity: 0.15">
                 </a-box>
             </a-entity>
 
-            <!-- Head with Face Features -->
+            <!-- פנים ותווי פנים Head with Face Features -->
             <a-entity position="0 1.2 0">
-                <!-- Head Shape -->
+                <!-- פה Head Shape -->
                 <a-sphere position="0 0.3 0" radius="0.3" color="#ffdbac" material="opacity: 0.8">
                 </a-sphere>
 
-                <!-- Eyes -->
-                <a-sphere position="-0.1 0.35 0.25" radius="0.03" color="#ffffff"></a-sphere>
-                <a-sphere position="0.1 0.35 0.25" radius="0.03" color="#ffffff"></a-sphere>
+                <!-- עינים Eyes -->
+                <a-sphere position="-0.1 0.35 0.25" radius="0.03" color="#57b4fa"></a-sphere>
+                <a-sphere position="0.1 0.35 0.25" radius="0.03" color="#57b4fa"></a-sphere>
                 <a-sphere position="-0.1 0.35 0.26" radius="0.015" color="#000000"></a-sphere>
                 <a-sphere position="0.1 0.35 0.26" radius="0.015" color="#000000"></a-sphere>
 
-                <!-- Nose -->
+                <!-- אף Nose -->
                 <a-entity position="0 0.3 0.3">
                     <a-box position="0 0 0" width="0.1" height="0.1" depth="0.1" color="#ffdbac">
                     </a-box>
-                    <!-- Nostrils -->
+                    <!-- נחירים Nostrils -->
                     <a-cylinder position="-0.02 -0.03 0" radius="0.01" height="0.02" color="#333"></a-cylinder>
                     <a-cylinder position="0.02 -0.03 0" radius="0.01" height="0.02" color="#333"></a-cylinder>
                 </a-entity>
 
-                <!-- Mouth -->
+                <!-- פה Mouth -->
                 <a-entity position="0 0.15 0.25">
                     <a-box position="0 0 0" width="0.15" height="0.03" depth="0.05" color="#ff9999">
                     </a-box>
                 </a-entity>
             </a-entity>
 
-            <!-- Respiratory System -->
+            <!-- מערכת הנשימה Respiratory System -->
             <a-entity position="0 0.3 0">
-                <!-- Nasal Cavity -->
+                <!-- חלל האף Nasal Cavity -->
                 <a-box position="0 0.8 0" width="0.2" height="0.15" depth="0.2" color="#ff9999" material="opacity: 0.8"
-                    hoverable="tooltip: חלל האף - מסנן, מחמם ומלחלח את האוויר הנכנס" class="interactive">
+                    class="interactive">
                 </a-box>
 
-                <!-- Trachea -->
+                <!-- קנה הנשימה Trachea -->
                 <a-cylinder position="0 0.4 0" height="0.5" radius="0.05" color="#ff7777" material="opacity: 0.9"
-                    hoverable="tooltip: קנה הנשימה - צינור המוביל אוויר אל הריאות" class="interactive">
+                    class="interactive">
                 </a-cylinder>
 
-                <!-- Lungs -->
+                <!-- ריאות Lungs -->
                 <a-entity position="0 0.2 0">
-                    <!-- Left Lung -->
+                    <!-- ריאה שמאל Left Lung -->
                     <a-entity position="-0.2 0 0">
                         <a-sphere position="0 0 0" radius="0.25" color="#ff6666" material="opacity: 0.7"
-                            hoverable="tooltip: ריאה שמאלית - איבר חיוני לחילוף הגזים בגוף" class="interactive">
+                            class="interactive">
                         </a-sphere>
-                        <!-- Bronchioles (Left) -->
-                        <a-entity position="0.1 0 0"
-                            hoverable="tooltip: סימפונות - צינורות קטנים המובילים אוויר בתוך הריאות">
+                        <!-- סיפמונה שמאל Bronchioles (Left) -->
+                        <a-entity position="0.1 0 0">
                             <a-cylinder position="0 0 0" height="0.2" radius="0.02" rotation="0 0 -45" color="#ff5555">
                             </a-cylinder>
-                            <!-- Alveoli clusters (Left) -->
-                            <a-entity position="0.1 -0.1 0"
-                                hoverable="tooltip: נאדיות - שקיקי אוויר זעירים בהם מתבצע חילוף הגזים">
+                            <!-- נאדיות ריאה שמאל Alveoli clusters (Left) -->
+                            <a-entity position="0.1 -0.1 0">
                                 <a-sphere position="0 0 0" radius="0.03" color="#ff4444"></a-sphere>
                                 <a-sphere position="0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
                                 <a-sphere position="-0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
@@ -245,34 +119,31 @@
                         </a-entity>
                     </a-entity>
 
-                    <!-- Right Lung -->
+                    <!-- ריאה ימין Right Lung -->
                     <a-entity position="0.2 0 0">
                         <a-sphere position="0 0 0" radius="0.25" color="#ff6666" material="opacity: 0.7"
-                            hoverable="tooltip: ריאה ימנית - איבר חיוני לחילוף הגזים בגוף" class="interactive">
+                            class="interactive">
                         </a-sphere>
-                        <!-- Bronchioles (Right) -->
+                        <!-- סימפונה ימין Bronchioles (Right) -->
                         <a-entity position="-0.1 0 0"
-                            hoverable="tooltip: סימפונות - צינורות קטנים המובילים אוויר בתוך הריאות">
+                            >
                             <a-cylinder position="0 0 0" height="0.2" radius="0.02" rotation="0 0 45" color="#ff5555">
                             </a-cylinder>
-                            <!-- Alveoli clusters (Right) -->
+                            <!-- נאדיות ריאה ימין Alveoli clusters (Right) -->
                             <a-entity position="-0.1 -0.1 0"
-                                hoverable="tooltip: נאדיות - שקיקי אוויר זעירים בהם מתבצע חילוף הגזים">
-                                <a-sphere position="0 0 0" radius="0.03" color="#ff4444" class="clickable"
-                                    data-info="הנאדיות מחליפות חמצן ופחמן דו-חמצני עם הדם."></a-sphere>
-                                <a-sphere position="0.03 0.03 0" radius="0.03" color="#ff4444" class="clickable"
-                                    data-info="הנאדיות מחליפות חמצן ופחמן דו-חמצני עם הדם."></a-sphere>
-                                <a-sphere position="-0.03 0.03 0" radius="0.03" color="#ff4444" class="clickable"
-                                    data-info="הנאדיות מחליפות חמצן ופחמן דו-חמצני עם הדם."></a-sphere>
+                                >
+                                <a-sphere position="0 0 0" radius="0.03" color="#ff4444"></a-sphere>
+                                <a-sphere position="0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
+                                <a-sphere position="-0.03 0.03 0" radius="0.03" color="#ff4444"></a-sphere>
                             </a-entity>
                         </a-entity>
                     </a-entity>
                 </a-entity>
 
-                <!-- Heart -->
+                <!-- לב Heart -->
                 <a-entity position="0 0.1 -0.1">
                     <a-sphere position="0 0 0" radius="0.15" color="#cc0000" material="opacity: 0.8"
-                        hoverable="tooltip: לב - משאבת הדם של הגוף" class="interactive">
+                        class="interactive">
                     </a-sphere>
                 </a-entity>
             </a-entity>
@@ -290,51 +161,42 @@
 
         <!-- Camera -->
         <a-entity position="0 1.6 5">
-            <a-camera look-controls wasd-controls zoom-controls></a-camera>
+            <a-camera look-controls wasd-controls></a-camera>
         </a-entity>
         <a-entity position="0 1.6 0">
-            <!-- Left side panels -->
+            <!-- לוחות מצד שמאל Left side panels -->
             <a-entity
                 floating-panel="title: נאדיות הריאה; description: שקיקי אוויר זעירים בהם מתבצע חילוף הגזים; image: images/alveoli.jpg"
-                position="0.7 2.5 0" rotation="0 30 0">
+                position="0.0 2.5 0" rotation="0 30 0">
             </a-entity>
 
             <a-entity
                 floating-panel="title: קנה הנשימה; description: צינור המוביל אוויר אל הריאות; image: images/trachea.jpg"
-                position="2.2 2.5 0" rotation="0 30 0">
+                position="1.5 2.5 0" rotation="0 30 0">
             </a-entity>
 
             <a-entity
                 floating-panel="title: חלל האף; description: מסנן, מחמם ומלחלח את האוויר הנכנס; image: images/nose_cavity.jpg"
-                position="3.7 2.5 0" rotation="0 30 0">
+                position="3.0 2.5 0" rotation="0 30 0">
             </a-entity>
 
-            <!-- Right side panels -->
+            <!-- לוחות מצד ימין Right side panels -->
             <a-entity
                 floating-panel="title: סימפונות; description: צינורות קטנים המובילים אוויר בתוך הריאות; image: images/bronchioles.png"
-                position="0.7 -2.5 0" rotation="0 -30 0">
+                position="0.0 -2.5 0" rotation="0 -30 0">
             </a-entity>
 
             <a-entity
                 floating-panel="title: לוע; description: מסייע בהעברת חמצן ואוכל. ממנו יוצא הקול; image: images/mouth.png"
-                position="2.2 -2.5 0" rotation="0 -30 0">
+                position="1.5 -2.5 0" rotation="0 -30 0">
             </a-entity>
 
             <a-entity
                 floating-panel="title: סרעפת; description: שריר שעוזר בתהליך הנשימה על-ידי התכווצות והתרחבות; image: images/diafragma.gif"
-                position="3.7 -2.5 0" rotation="0 -30 0">
+                position="3.0 -2.5 0" rotation="0 -30 0">
             </a-entity>
         </a-entity>
     </a-scene>
-
-    <!-- Clickable Info Popup -->
-    <script>
-        document.querySelectorAll(".clickable").forEach(el => {
-            el.addEventListener("click", () => {
-                alert(el.getAttribute("data-info"));
-            });
-        });
-    </script>
 </body>
 
 </html>

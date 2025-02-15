@@ -1,0 +1,12 @@
+
+.info-text {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: white;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+}
