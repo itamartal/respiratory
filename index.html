@@ -16,7 +16,7 @@
     <a-scene>
         <!-- Background Image -->
         <a-entity position="0 6.6 -2">
-            <a-plane width="6" height="6" material="src: images/background.jpg; transparent: true; opacity: 0.5">
+            <a-plane width="6" height="6" material="src: images/background.png; transparent: false; opacity: 1.0">
             </a-plane>
         </a-entity>
 
@@ -24,7 +24,7 @@
         <!-- שמים -->
         <a-sky color="#afccfa"></a-sky>
         <!-- רצפה -->
-        <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#361607"></a-plane>
+        <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#99ffcc"></a-plane>
 
         <!-- Lighting -->
         <a-light type="ambient" color="#fff" intensity="0.5"></a-light>
@@ -45,6 +45,16 @@
                     <a-box position="0 -0.5 0" width="0.8" height="0.3" depth="0.4" color="#ffd5c2"
                         material="opacity: 0.3">
                     </a-box>
+                </a-entity>
+
+                <!-- רגליים Legs -->
+                <a-entity position="0 0 0">
+                    <a-cylinder position="-0.2 -1.5 0" radius="0.1" height="2.6" color="#ffd5c2"
+                        material="opacity: 0.3">
+                    </a-cylinder>
+                    <a-cylinder position="0.2 -1.5 0" radius="0.1" height="2.6" color="#ffd5c2"
+                        material="opacity: 0.3">
+                    </a-cylinder>
                 </a-entity>
 
                 <!-- כתפיים Shoulders -->
@@ -122,8 +132,10 @@
                 <a-sphere position="0 0.5 0" radius="0.32" color="#4a3410" scale="1 0.7 1"></a-sphere>
                 
                 <!-- Side hair pieces -->
-                <a-sphere position="-0.25 0.3 0" radius="0.15" color="#4a3410"></a-sphere>
-                <a-sphere position="0.25 0.3 0" radius="0.15" color="#4a3410"></a-sphere>
+                <a-cylinder position="-0.25 0.3 0" radius="0.07" color="#4a3410" rotation="20 0 -10"></a-cylinder>
+                <a-cylinder position="-0.25 0.3 0" radius="0.05" color="#4a3410" rotation="20 0 -25"></a-cylinder>
+                <a-cylinder position="0.25 0.3 0" radius="0.05" color="#4a3410" rotation="20 0 25"></a-cylinder>
+                <a-cylinder position="0.25 0.3 0" radius="0.07" color="#4a3410" rotation="20 0 10"></a-cylinder>
                 
                 <!-- Back hair -->
                 <a-sphere position="0 0.3 -0.2" radius="0.25" color="#4a3410"></a-sphere>
