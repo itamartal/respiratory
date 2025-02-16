@@ -10,43 +10,34 @@ AFRAME.registerComponent('floating-panel', {
 
         // Create panel background
         const panel = document.createElement('a-plane');
-        panel.setAttribute('width', '1.5');
-        panel.setAttribute('height', '1.2');
+        panel.setAttribute('width', '2.5');
+        panel.setAttribute('height', '1.4');
         panel.setAttribute('color', '#334455');
-        panel.setAttribute('material', 'opacity', '0.9');
+        panel.setAttribute('material', 'opacity', '0.5');
 
         // Create title text
-        const title = document.createElement('a-text');
-        title.setAttribute('value', this.data.title);
-        title.setAttribute('position', '0 0.4 0.01');
-        title.setAttribute('align', 'center');
-        title.setAttribute('shader', 'msdf');
-        title.setAttribute('font', 'Alef-Regular.json');
-        title.setAttribute('width', '1.4');
-        title.setAttribute('color', 'white');
+        const title = document.createElement('a-image');
+        title.setAttribute('src', this.data.title);
+        title.setAttribute('position', '0 0.5 0.01');
+        title.setAttribute('width', '2.2');
+        title.setAttribute('height', '0.3');
         el.appendChild(title);
 
         // Create description text
-        const desc = document.createElement('a-text');
-        desc.setAttribute('value', this.data.description);
-        desc.setAttribute('position', '0 0 0.01');
-        desc.setAttribute('align', 'center');
-        desc.setAttribute('width', '1.4');
-        desc.setAttribute('shader', 'msdf');
-        desc.setAttribute('font', 'Alef-Regular.json');
-        desc.setAttribute('color', 'white');
-        desc.setAttribute('baseline', 'top');
+        const desc = document.createElement('a-image');
+        desc.setAttribute('src', this.data.description);
+        desc.setAttribute('position', '0 0.08 0.01');
+        desc.setAttribute('width', '2.4');
+        desc.setAttribute('height', '0.5');
         el.appendChild(desc);
 
-        // Create image if provided
-        if (this.data.image) {
-            const img = document.createElement('a-image');
-            img.setAttribute('src', this.data.image);
-            img.setAttribute('position', '0 -0.3 0.01');
-            img.setAttribute('width', '0.8');
-            img.setAttribute('height', '0.4');
-            el.appendChild(img);
-        }
+        // Create image
+        const img = document.createElement('a-image');
+        img.setAttribute('src', this.data.image);
+        img.setAttribute('position', '0 -0.45 0.01');
+        img.setAttribute('width', '1.0');
+        img.setAttribute('height', '0.5');
+        el.appendChild(img);
 
         el.appendChild(panel);                
 
