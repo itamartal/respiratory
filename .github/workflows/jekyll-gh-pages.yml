@@ -35,8 +35,10 @@ jobs:
         with:
           source: ./
           destination: ./_site
+      - name: Install requirements
+        run: python3 -m pip install -r ./requirements.txt
       - name: Build labels
-        run: echo blat
+        run: python3 ./build_heb_text.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
